@@ -12,16 +12,12 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
-  @Prop(Number) prop: number | undefined;
   type = "-";
   selectType(type: string) {
     if (type !== "-" && type !== "+") {
       throw new Error("type is unknow");
     }
     this.type = type;
-  }
-  mounted() {
-    console.log(this.prop);
   }
 }
 // export default {
