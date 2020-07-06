@@ -12,31 +12,14 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
-  type = "-";
+  @Prop() readonly value!: string;
   selectType(type: string) {
     if (type !== "-" && type !== "+") {
       throw new Error("type is unknow");
     }
-    this.type = type;
+    this.$emit("update:value", this.value);
   }
 }
-// export default {
-//   name: "Types",
-//   props: ["xxx"],
-//   mounted() {
-//     console.log(this.xxx);
-//   },
-//   data() {
-//     return {
-//       type: "-" //返回 + 表示收入，返回 - 表示支出
-//     };
-//   },
-//   methods: {
-//     selectType(type) {
-//       this.type = type;
-//     }
-//   }
-// };
 </script>
 
 <style lang="scss" scoped>
