@@ -1,15 +1,15 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon name="left" class="leftIcon" />
+      <Icon name="left" class="leftIcon" @click.native="back" />
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
     <div class="notes-wrapper">
-      <Notes field-name="标签名" placeholder="请输入标签名" />
+      <Notes :value="tag.name" @update:value="update" field-name="标签名" placeholder="请输入标签名" />
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click.native="remove">删除标签</Button>
     </div>
   </Layout>
 </template>
@@ -24,16 +24,31 @@ import Button from "../components/Button.vue";
   components: { Notes, Button }
 })
 export default class EditLabel extends Vue {
+  tag?: { id: string; name: string } = undefined;
   created() {
     const id = this.$route.params.id;
     tagModel.fetch();
     const tags = tagModel.data;
     const tag = tags.filter(t => t.id === id)[0];
     if (tag) {
-      console.log(tag);
+      this.tag = tag;
     } else {
       this.$router.replace("/404");
     }
+  }
+  update(name: string) {
+    if (this.tag) {
+      tagModel.update(this.tag.id, name);
+    }
+  }
+  remove() {
+    if (this.tag) {
+      tagModel.remove(this.tag.id);
+    }
+    this.$router.back();
+  }
+  back() {
+    this.$router.back();
   }
 }
 </script>
@@ -47,8 +62,6 @@ export default class EditLabel extends Vue {
   .leftIcon {
     height: 24px;
     width: 24px;
-  }
-  .title {
   }
   .rightIcon {
     height: 24px;
