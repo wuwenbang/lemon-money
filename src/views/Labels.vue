@@ -1,13 +1,13 @@
 <template>
   <Layout>
     <div class="tags">
-      <router-link class="tag" v-for="tag in tags" :key="tag" :to="`/labels/edit/${tag.id}`">
+      <router-link class="tag" v-for="tag in tags" :key="tag.name" :to="`/labels/edit/${tag.id}`">
         <span>{{tag.name}}</span>
         <Icon name="right" />
       </router-link>
     </div>
     <div class="createTag-wrapper">
-      <button class="createTag" @click="createTag">新建标签</button>
+      <Button class="createTag" @click.native="createTag">新建标签</Button>
     </div>
   </Layout>
 </template>
@@ -16,8 +16,11 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import tagModel from "@/models/tagModel.ts";
+import Button from "@/components/Button.vue";
 tagModel.fetch();
-@Component
+@Component({
+  components: { Button }
+})
 export default class Labels extends Vue {
   tags = tagModel.data;
   createTag() {
@@ -53,19 +56,10 @@ export default class Labels extends Vue {
     }
   }
 }
-.createTag {
-  border: none;
-  background: $color-theme;
-  color: white;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 4px;
-  text-align: center;
-  &-wrapper {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-  }
+.createTag-wrapper {
+  margin: 40px;
+  display: flex;
+  justify-content: center;
 }
 </style>
 
