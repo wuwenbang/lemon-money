@@ -2,7 +2,12 @@
   <div>
     <label class="notes">
       <span class="name">{{fieldName}}</span>
-      <input v-model="notes" type="text" :placeholder="this.placeholder" />
+      <input
+        :value="value"
+        @input="onValueChanged($event.target.value)"
+        type="text"
+        :placeholder="placeholder"
+      />
     </label>
   </div>
 </template>
@@ -15,8 +20,8 @@ export default class Notes extends Vue {
   @Prop() fieldName!: string;
   @Prop() placeholder!: string;
   @Prop() readonly value!: string;
-  notes = this.value;
-  @Watch("notes")
+
+  @Watch("value")
   onValueChanged(value: string, oldValue: string) {
     this.$emit("update:value", value);
   }
