@@ -1,3 +1,5 @@
+
+import clone from '@/lib/clone.ts'
 const localStorageKeyName = 'record'
 const recordModel = {
     data: [] as RecordItem[],
@@ -9,8 +11,10 @@ const recordModel = {
 
         window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
     },
-    clone(data: RecordItem | RecordItem[]) {
-        return JSON.parse(JSON.stringify(data));
+    create(record: RecordItem) {
+        const record2: RecordItem = clone(record);
+        record2.time = new Date();
+        this.data.push(record2);
     }
 
 }
