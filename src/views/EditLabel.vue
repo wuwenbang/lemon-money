@@ -22,7 +22,7 @@ import Notes from "../components/Money/Notes.vue";
 import Button from "../components/Button.vue";
 @Component({
   components: { Notes, Button }
-})
+}) 
 export default class EditLabel extends Vue {
   tag?: { id: string; name: string } = undefined;
   created() {

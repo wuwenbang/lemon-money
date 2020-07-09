@@ -8,7 +8,7 @@
     </div>
     <Tags :tag-list.sync="tags" @update:value="onUpdateTags" class="tag" />
   </Layout>
-</template>
+</template> 
 
 <script lang="ts">
 import Vue from "vue";
