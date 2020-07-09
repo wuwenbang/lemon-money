@@ -15,7 +15,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
-import tagModel from "@/models/tagModel.ts";
 import Button from "@/components/Button.vue";
 @Component({
   components: { Button }

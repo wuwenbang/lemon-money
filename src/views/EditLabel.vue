@@ -17,34 +17,32 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import tagModel from "../models/tagModel";
 import Notes from "../components/Money/Notes.vue";
 import Button from "../components/Button.vue";
 @Component({
   components: { Notes, Button }
-}) 
+})
 export default class EditLabel extends Vue {
-  tag?: { id: string; name: string } = undefined;
+  tag?: Tag = undefined;
   created() {
-    const id = this.$route.params.id;
-    const tags = window.tagList;
-    const tag = tags.filter(t => t.id === id)[0];
-    if (tag) {
-      this.tag = tag;
-    } else {
+    this.tag = window.findTag(this.$route.params.id);
+    if (!this.tag) {
       this.$router.replace("/404");
     }
   }
   update(name: string) {
     if (this.tag) {
-      tagModel.update(this.tag.id, name);
+      window.updateTag(this.tag.id, name);
     }
   }
   remove() {
     if (this.tag) {
-      tagModel.remove(this.tag.id);
+      if (window.removeTag(this.tag.id)) {
+        this.$router.back();
+      } else {
+        window.alert("删除失败");
+      }
     }
-    this.$router.back();
   }
   back() {
     this.$router.back();
