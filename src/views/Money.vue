@@ -6,7 +6,7 @@
     <div class="notes-wrapper">
       <Notes :value.sync="record.notes" field-name="备注" placeholder="请输入备注" />
     </div>
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags" class="tag" />
+    <Tags :tag-list.sync="tags" @update:value="onUpdateTags" class="tag" />
   </Layout>
 </template>
 
@@ -19,14 +19,14 @@ import Tags from "@/components/Money/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
 import recordModel from "@/models/recordModel.ts";
 import tagModel from "../models/tagModel";
-const tagList = tagModel.fetch().map(item => item.name);
+
 const recordList = recordModel.fetch();
 
 @Component({
   components: { Tags, Notes, Types, NumberPad }
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
     tags: [],

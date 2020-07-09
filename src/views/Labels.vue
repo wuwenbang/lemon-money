@@ -17,12 +17,11 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import tagModel from "@/models/tagModel.ts";
 import Button from "@/components/Button.vue";
-tagModel.fetch();
 @Component({
   components: { Button }
 })
 export default class Labels extends Vue {
-  tags = tagModel.data;
+  tags = window.tagList;
   createTag() {
     const name = window.prompt("请输入标签名：");
     if (name) {
