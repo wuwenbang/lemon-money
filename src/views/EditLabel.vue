@@ -21,17 +21,18 @@ import Notes from "../components/Money/Notes.vue";
 import Button from "../components/Button.vue";
 import store from "@/store/index2.ts";
 @Component({
-  components: { Notes, Button },
-  computed: {
-    tagsList() {
-      return this.$store.state.tagList;
-    }
-  }
+  components: { Notes, Button }
 })
 export default class EditLabel extends Vue {
-  tag?: Tag = undefined;
+  get tag() {
+    //computed
+    return this.$store.state.currentTag;
+  }
+  get tagsList() {
+    return this.$store.state.tagList;
+  }
   created() {
-    this.tag = store.findTag(this.$route.params.id);
+    this.$store.commit("setCurrentTag", this.$route.params.id);
     if (!this.tag) {
       this.$router.replace("/404");
     }

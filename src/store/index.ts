@@ -2,13 +2,18 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import clone from '@/lib/clone';
 import createId from '@/lib/createId';
-
+type StateType = {
+  recordList: RecordItem[]
+  tagList: Tag[]
+  currentTag: undefined | Tag
+}
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    recordList: [] as RecordItem[],
-    tagList: [] as Tag[],
-  },
+    recordList: [],
+    tagList: [],
+    currentTag: undefined
+  } as StateType,
   mutations: {
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
@@ -27,8 +32,8 @@ const store = new Vuex.Store({
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       return state.tagList;
     },
-    findTag(state, id: string) {
-      return state.tagList.filter(t => t.id === id)[0];
+    setCurrentTag(state, id: string) {
+      state.currentTag = state.tagList.filter(t => t.id === id)[0];
     },
     createTag(state, name: string | null) {
       if (name === null) return 'fail'

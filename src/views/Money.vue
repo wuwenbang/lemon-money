@@ -20,15 +20,16 @@ import { Component } from "vue-property-decorator";
 import store from "@/store/index2.ts";
 
 @Component({
-  components: { Tags, Notes, Types, NumberPad },
-  computed: {
-    recordList() {
-      return this.$store.state.recordList;
-    }
-  }
+  components: { Tags, Notes, Types, NumberPad }
 })
 export default class Money extends Vue {
-  tags = store.tagList;
+  get recordList() {
+    return this.$store.state.recordList;
+  }
+  get tagList() {
+    return this.$store.state.tagList;
+  }
+  tags = this.tagList;
   record: RecordItem = {
     tags: [],
     notes: "",
