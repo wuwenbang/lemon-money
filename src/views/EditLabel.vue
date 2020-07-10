@@ -13,7 +13,7 @@
     </div>
   </Layout>
 </template>
-
+ 
 <script lang='ts'>
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
@@ -21,7 +21,12 @@ import Notes from "../components/Money/Notes.vue";
 import Button from "../components/Button.vue";
 import store from "@/store/index2.ts";
 @Component({
-  components: { Notes, Button }
+  components: { Notes, Button },
+  computed: {
+    tagsList() {
+      return this.$store.state.tagList;
+    }
+  }
 })
 export default class EditLabel extends Vue {
   tag?: Tag = undefined;

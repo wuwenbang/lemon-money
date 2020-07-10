@@ -17,16 +17,19 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
 import store from "@/store/index2.ts";
+import TagHelper from "../mixin/tagHelper.vue";
 
 @Component({
-  components: { Button }
-})
-export default class Labels extends Vue {
-  tags = store.tagList;
-  createTag() {
-    const name = window.prompt("请输入标签名：");
-    store.createTag(name);
+  components: { Button },
+  computed: {
+    tagsList() {
+      return this.$store.state.tagList;
+    }
   }
+})
+export default class Labels extends TagHelper {
+  //createTag 通过 TagHelper Mixin
+  tags = this.$store.state.tagList;
 }
 </script>
 
