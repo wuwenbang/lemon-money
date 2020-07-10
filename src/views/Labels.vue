@@ -17,7 +17,8 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
 import store from "@/store/index2.ts";
-import TagHelper from "../mixin/tagHelper.vue";
+import TagHelper from "@/mixin/TagHelper";
+import { mixins } from "vue-class-component";
 
 @Component({
   components: { Button },
@@ -27,7 +28,7 @@ import TagHelper from "../mixin/tagHelper.vue";
     }
   }
 })
-export default class Labels extends TagHelper {
+export default class Labels extends mixins(TagHelper) {
   //createTag 通过 TagHelper Mixin
   tags = this.$store.state.tagList;
 }

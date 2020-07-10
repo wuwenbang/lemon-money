@@ -18,7 +18,8 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import store from "@/store/index2.ts";
-import TagHelper from "../../mixin/tagHelper.vue";
+import TagHelper from "@/mixin/TagHelper";
+import { mixins } from "vue-class-component";
 @Component({
   computed: {
     tagList() {
@@ -26,7 +27,7 @@ import TagHelper from "../../mixin/tagHelper.vue";
     }
   }
 })
-export default class Tags extends TagHelper {
+export default class Tags extends mixins(TagHelper) {
   //createTag 通过 TagHelper Mixin
   selectedTags: string[] = [];
   created() {
