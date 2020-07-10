@@ -17,6 +17,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import store from "@/store/index2.ts";
 @Component
 export default class Tags extends Vue {
   @Prop() tagList: string[] | undefined;
@@ -32,13 +33,10 @@ export default class Tags extends Vue {
   }
   create() {
     const name = window.prompt("请输入标签名");
-    if (name === "" || name === null) {
+    if (!name) {
       alert("标签名不能为空");
-    } else {
-      if (this.tagList) {
-        // this.$emit("update:tags", [...this.tagList, name]);
-        window.createTag(name);
-      }
+    } else if (this.tagList) {
+      store.createTag(name);
     }
   }
 }
