@@ -21,7 +21,6 @@ export default class Notes extends Vue {
   @Prop() placeholder!: string;
   @Prop() readonly value!: string;
 
-  @Watch("value")
   onValueChanged(value: string, oldValue: string) {
     this.$emit("update:value", value);
   }

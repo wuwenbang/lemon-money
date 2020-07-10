@@ -16,7 +16,6 @@
 import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import Button from "@/components/Button.vue";
-import store from "@/store/index2.ts";
 import TagHelper from "@/mixin/TagHelper";
 import { mixins } from "vue-class-component";
 

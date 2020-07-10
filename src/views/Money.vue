@@ -17,7 +17,6 @@ import Types from "@/components/Money/Types.vue";
 import Notes from "@/components/Money/Notes.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component } from "vue-property-decorator";
-import store from "@/store/index2.ts";
 
 @Component({
   components: { Tags, Notes, Types, NumberPad }
