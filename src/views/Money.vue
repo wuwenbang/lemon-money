@@ -1,25 +1,40 @@
   
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="onCreateRecord" />
-    <Types :value.sync="record.type" />
+    <NumberPad
+      :value.sync="record.amount"
+      @submit="onCreateRecord"
+    />
+    <Tabs
+      :data-source="recordTypeList"
+      :value.sync="record.type"
+    />
     <div class="notes-wrapper">
-      <Notes :value.sync="record.notes" field-name="备注" placeholder="请输入备注" />
+      <Notes
+        :value.sync="record.notes"
+        field-name="备注"
+        placeholder="请输入备注"
+      />
     </div>
-    <Tags :tag-list.sync="tags" @update:value="onUpdateTags" class="tag" />
+    <Tags
+      :tag-list.sync="tags"
+      @update:value="onUpdateTags"
+      class="tag"
+    />
   </Layout>
 </template>  
 
 <script lang="ts">
 import Vue from "vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
-import Types from "@/components/Money/Types.vue";
 import Notes from "@/components/Money/Notes.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component } from "vue-property-decorator";
+import recordTypeList from "../constants/recordTypeList";
+import Tabs from "../components/Tabs.vue";
 
 @Component({
-  components: { Tags, Notes, Types, NumberPad }
+  components: { Tags, Notes, Tabs, NumberPad }
 })
 export default class Money extends Vue {
   get recordList() {
@@ -28,6 +43,7 @@ export default class Money extends Vue {
   get tagList() {
     return this.$store.state.tagList;
   }
+  recordTypeList = recordTypeList;
   tags = this.tagList;
   record: RecordItem = {
     tags: [],
