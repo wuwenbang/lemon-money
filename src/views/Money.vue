@@ -39,7 +39,6 @@ export default class Money extends Vue {
   };
   beforeCreate() {
     const initTags = ["默认", "交通", "饮食", "住宿"];
-    console.log(localStorage.getItem("tagList"));
     if (localStorage.getItem("tagList") === null) {
       for (let tag of initTags) {
         this.$store.commit("createTag", tag);
