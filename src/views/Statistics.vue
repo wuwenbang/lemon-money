@@ -1,10 +1,9 @@
 <template>
   <Layout>
     <Tabs class-prefix="types" :data-source="recordTypeList" :value.sync="type" />
-    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval" />
-    <ol>
+    <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="title">{{beautify(group.title)}}</h3>
+        <h3 class="title"><span>{{beautify(group.title)}}</span><span>￥{{group.total}}</span></h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
             <span>{{tagString(item.tags)}} </span>
@@ -14,6 +13,9 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="no-records">
+      <span>目前没有相关记录</span>
+    </div>
   </Layout>
 </template>
 
@@ -39,18 +41,22 @@ export default class Statistics extends Vue {
     return (this.$store.state as StateType).recordList;
   }
   get groupedList() {
+    type Result = { title: string; total?: number; items: RecordItem[] }[];
     const { recordList } = this;
-    type HashTableValue = { title: string; items: RecordItem[] };
-    const newList = clone(recordList).sort(
-      (a, b) => dayjs(b.time).valueOf() - dayjs(a.time).valueOf()
-    );
-    const result = [
+
+    const newList = clone(recordList)
+      .filter(t => t.type === this.type)
+      .sort((a, b) => dayjs(b.time).valueOf() - dayjs(a.time).valueOf());
+    if (newList.length === 0) {
+      return [] as Result;
+    }
+    const result: Result = [
       {
         title: dayjs(newList[0].time).format("YYYY-MM-DD"),
         items: [newList[0]]
       }
     ];
-    for (let i = 0; i < newList.length; i++) {
+    for (let i = 1; i < newList.length; i++) {
       const current = newList[i];
       const last = result[result.length - 1];
       if (dayjs(last.title).isSame(dayjs(current.time), "day")) {
@@ -61,8 +67,10 @@ export default class Statistics extends Vue {
           items: [current]
         });
       }
+      result.forEach(group => {
+        group.total = group.items.reduce((sum, item) => sum + item.amount, 0);
+      });
     }
-    console.log(result);
     return result;
   }
   created() {
@@ -110,10 +118,14 @@ export default class Statistics extends Vue {
   margin-left: 16px;
   color: #999;
 }
+.no-records {
+  padding: 16px;
+  text-align: center;
+}
 
 ::v-deep {
   .types-tabs-item {
-    background: white;
+    background: #ddd;
     &.selected {
       background: $color-theme;
       color: white;

@@ -1,26 +1,12 @@
   
 <template>
   <Layout class-prefix="layout">
-    <NumberPad
-      :value.sync="record.amount"
-      @submit="onCreateRecord"
-    />
-    <Tabs
-      :data-source="recordTypeList"
-      :value.sync="record.type"
-    />
+    <NumberPad :value.sync="record.amount" @submit="onCreateRecord" />
+    <Tabs :data-source="recordTypeList" :value.sync="record.type" />
     <div class="notes-wrapper">
-      <Notes
-        :value.sync="record.notes"
-        field-name="备注"
-        placeholder="请输入备注"
-      />
+      <Notes :value.sync="record.notes" field-name="备注" placeholder="请输入备注" />
     </div>
-    <Tags
-      :tag-list.sync="tags"
-      @update:value="onUpdateTags"
-      class="tag"
-    />
+    <Tags :tag-list.sync="tags" @update:value="onUpdateTags" class="tag" />
   </Layout>
 </template>  
 
@@ -51,14 +37,24 @@ export default class Money extends Vue {
     type: "-",
     amount: 0
   };
+  beforeCreate() {
+    const initTags = ["默认", "交通", "饮食", "住宿"];
+    console.log(localStorage.getItem("tagList"));
+    if (localStorage.getItem("tagList") === null) {
+      for (let tag of initTags) {
+        this.$store.commit("createTag", tag);
+      }
+    }
+  }
   created() {
     this.$store.commit("fetchRecords");
   }
-  onUpdateTags(value: string[]) {
+  onUpdateTags(value: Tag[]) {
     this.record.tags = value;
   }
   onCreateRecord() {
     this.$store.commit("createRecord", this.record);
+    this.record.notes = "";
   }
 }
 </script>
