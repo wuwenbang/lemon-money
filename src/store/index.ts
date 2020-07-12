@@ -2,11 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import clone from '@/lib/clone';
 import createId from '@/lib/createId';
-type StateType = {
-  recordList: RecordItem[]
-  tagList: Tag[]
-  currentTag: undefined | Tag
-}
+
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
@@ -20,7 +16,7 @@ const store = new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const record2: RecordItem = clone(record);
-      record2.time = new Date();
+      record2.time = new Date().toISOString();    //ISO8601
       state.recordList && state.recordList.push(record2);
       store.commit('saveRecords');
     },

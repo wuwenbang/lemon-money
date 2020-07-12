@@ -17,7 +17,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import store from "@/store/index2.ts";
 import TagHelper from "@/mixin/TagHelper";
 import { mixins } from "vue-class-component";
 @Component
