@@ -6,7 +6,7 @@
         <h3 class="title"><span>{{beautify(group.title)}}</span><span>￥{{group.total}}</span></h3>
         <ol>
           <li v-for="item in group.items" :key="item.id" class="record">
-            <span>{{tagString(item.tags)}} </span>
+            <span>{{tagString(item.tag)}} </span>
             <span class="notes">{{item.notes}}</span>
             <span>￥{{item.amount}} </span>
           </li>
@@ -47,6 +47,7 @@ export default class Statistics extends Vue {
     const newList = clone(recordList)
       .filter(t => t.type === this.type)
       .sort((a, b) => dayjs(b.time).valueOf() - dayjs(a.time).valueOf());
+
     if (newList.length === 0) {
       return [] as Result;
     }
@@ -67,17 +68,18 @@ export default class Statistics extends Vue {
           items: [current]
         });
       }
-      result.forEach(group => {
-        group.total = group.items.reduce((sum, item) => sum + item.amount, 0);
-      });
     }
+    result.forEach(group => {
+      group.total = group.items.reduce((sum, item) => sum + item.amount, 0);
+    });
+
     return result;
   }
   created() {
     this.$store.commit("fetchRecords");
   }
-  tagString(tags: Tag[]) {
-    return tags.length === 0 ? "无" : tags[0].name;
+  tagString(tag: Tag) {
+    return tag ? tag.name : "无";
   }
   beautify(time: string) {
     const day = dayjs(time);

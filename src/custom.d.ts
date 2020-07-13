@@ -4,7 +4,7 @@ type StateType = {
     currentTag: undefined | Tag
 }
 type RecordItem = {
-    tags: Tag[];
+    tag: Tag;
     notes: string;
     type: string;
     amount: number;

@@ -32,13 +32,13 @@ export default class Money extends Vue {
   recordTypeList = recordTypeList;
   tags = this.tagList;
   record: RecordItem = {
-    tags: [],
+    tag: { name: "none", id: "none" },
     notes: "",
     type: "-",
     amount: 0
   };
   beforeCreate() {
-    const initTags = ["默认", "交通", "饮食", "住宿"];
+    const initTags = ["日常", "交通", "饮食", "住宿"];
     if (localStorage.getItem("tagList") === null) {
       for (let tag of initTags) {
         this.$store.commit("createTag", tag);
@@ -48,8 +48,8 @@ export default class Money extends Vue {
   created() {
     this.$store.commit("fetchRecords");
   }
-  onUpdateTags(value: Tag[]) {
-    this.record.tags = value;
+  onUpdateTags(value: Tag) {
+    this.record.tag = value;
   }
   onCreateRecord() {
     this.$store.commit("createRecord", this.record);
