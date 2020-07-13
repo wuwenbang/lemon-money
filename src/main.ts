@@ -6,6 +6,7 @@ import store from './store';
 import Nav from '@/components/Nav.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
+import echarts from 'echarts'
 Vue.config.productionTip = false;
 
 Vue.component('Nav', Nav);
@@ -26,7 +27,7 @@ window.onload = function () {
 if (document.documentElement.clientWidth > 500) {
   window.alert("请使用移动设备（或者开发者工具移动设备模式并刷新）以保证浏览效果");
   const img = document.createElement('img');
-  img.src = "https://s1.ax1x.com/2020/07/13/UJZmBn.png";
+  img.src = "https://i.loli.net/2020/07/13/RcQHgCmJSahEDlK.png";
   img.style.position = "fixed"
   img.style.left = "50%"
   img.style.top = "50%"
@@ -34,3 +35,4 @@ if (document.documentElement.clientWidth > 500) {
   img.style.boxShadow = "0 0 10px rgba(0,0,0,0.25)"
   document.body.appendChild(img);
 }
+

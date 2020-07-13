@@ -23,6 +23,8 @@ export default class Tags extends mixins(TagHelper) {
   selectedTagName: string = "日常";
   created() {
     this.$store.commit("fetchTags");
+  }
+  mounted() {
     this.$emit("update:value", this.tagList[0]);
   }
   toggle(tag: Tag) {
