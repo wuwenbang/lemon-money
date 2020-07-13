@@ -26,7 +26,7 @@ window.onload = function () {
 if (document.documentElement.clientWidth > 500) {
   window.alert("请使用移动设备（或者开发者工具移动设备模式并刷新）以保证浏览效果");
   const img = document.createElement('img');
-  img.src = "/qrcode.png";
+  img.src = "https://s1.ax1x.com/2020/07/13/UJZmBn.png";
   img.style.position = "fixed"
   img.style.left = "50%"
   img.style.top = "50%"
