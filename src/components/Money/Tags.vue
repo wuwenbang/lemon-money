@@ -20,7 +20,7 @@ export default class Tags extends mixins(TagHelper) {
   get tagList() {
     return this.$store.state.tagList;
   }
-  selectedTagName: string = "日常";
+  selectedTagName: string = "通用";
   created() {
     this.$store.commit("fetchTags");
   }

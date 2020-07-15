@@ -4,7 +4,8 @@
     <NumberPad :value.sync="record.amount" @submit="onCreateRecord" />
     <Tabs :data-source="recordTypeList" :value.sync="record.type" />
     <div class="notes-wrapper">
-      <Notes :value.sync="record.notes" field-name="备注" placeholder="请输入备注" />
+      <Notes :value.sync="record.notes" field-name="备注" type="text" placeholder="请输入备注" />
+      <Notes :value.sync="record.time" field-name="日期" type="date" />
     </div>
     <Tags :tag-list.sync="tags" @update:value="onUpdateTags" class="tag" />
   </Layout>
@@ -35,10 +36,11 @@ export default class Money extends Vue {
     tag: { name: "none", id: "none" },
     notes: "",
     type: "-",
-    amount: 0
+    amount: 0,
+    time: new Date().toISOString()
   };
   beforeCreate() {
-    const initTags = ["日常", "交通", "饮食", "住宿"];
+    const initTags = ["通用", "交通", "饮食", "住宿"];
     if (localStorage.getItem("tagList") === null) {
       for (let tag of initTags) {
         this.$store.commit("createTag", tag);
@@ -67,6 +69,6 @@ export default class Money extends Vue {
   background: white;
 }
 .notes-wrapper {
-  padding: 12px;
+  padding: 6px;
 }
 </style>

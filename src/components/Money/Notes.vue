@@ -2,12 +2,13 @@
   <div>
     <label class="notes">
       <span class="name">{{fieldName}}</span>
-      <input
-        :value="value"
-        @input="onValueChanged($event.target.value)"
-        type="text"
-        :placeholder="placeholder"
-      />
+      <template v-if="type==='date'">
+        <input :type="type||'text'" :value="dateHandle(value)" @input="onValueChanged($event.target.value)" :placeholder="placeholder" />
+      </template>
+      <template v-else>
+        <input :type="type||'text'" :value="value" @input="onValueChanged($event.target.value)" :placeholder="placeholder" />
+      </template>
+
     </label>
   </div>
 </template>
@@ -15,14 +16,19 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
+import dayjs from "dayjs";
 @Component
 export default class Notes extends Vue {
   @Prop() fieldName!: string;
   @Prop() placeholder!: string;
   @Prop() readonly value!: string;
+  @Prop() type?: string;
 
   onValueChanged(value: string, oldValue: string) {
     this.$emit("update:value", value);
+  }
+  dateHandle(isostring: string) {
+    return dayjs(isostring).format("YYYY-MM-DD");
   }
 }
 </script>
@@ -30,7 +36,7 @@ export default class Notes extends Vue {
 <style lang="scss" scoped>
 .notes {
   font-size: 14px;
-  padding-left: 16px;
+  padding-left: 8px;
   display: flex;
   align-items: center;
   .name {
