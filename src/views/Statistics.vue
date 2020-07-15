@@ -1,6 +1,9 @@
 <template>
   <Layout>
     <Tabs class-prefix="types" :data-source="recordTypeList" :value.sync="type" />
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Chart :options="x" class="chart"/>
+    </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title"><span>{{beautify(group.title)}}</span><span>￥{{group.total}}</span></h3>
@@ -29,14 +32,65 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import dayjs from "dayjs";
 import clone from "../lib/clone";
+import Chart from "@/components/Chart.vue";
 @Component({
-  components: { Tabs }
+  components: { Tabs, Chart }
 })
 export default class Statistics extends Vue {
   type = "-";
   interval = "day";
   intervalList = intervalList;
   recordTypeList = recordTypeList;
+  get x() {
+    return {
+      grid:{
+        left:0,
+        right:0
+      },
+      title: {
+        text: "ECharts 入门示例"
+      },
+      tooltip: {},
+      legend: {
+        data: ["销量"]
+      },
+      xAxis: {
+        data: [
+          "1", "2", "3","4", "5", "6", "7","8","9","10",
+          "11", "12","14", "13", "15", "16", "17","18","19","20",
+          "21", "22", "23","24", "25", "26", "27","28","29","30",
+          ],
+          axisTick: {alignWithLabel: true},
+          axisLine:{lineStyle:{color:'#666'}}
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          symbol:'circle',
+          symbolSize:12,
+          itemStyle:{
+            borderWidth:2,
+             color: "#41b883"
+          },
+          name: "销量",
+          type: "line",
+          data: [
+            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
+            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
+            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
+          ],
+          tooltip:{
+            show:true,
+            triggerOn:'click',
+            formatter:'{c}',
+            position:'top'
+          }
+        }
+      ]
+    };
+  }
   get recordList() {
     return (this.$store.state as StateType).recordList;
   }
@@ -75,8 +129,12 @@ export default class Statistics extends Vue {
 
     return result;
   }
+  mounted(){
+    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+  }
   created() {
     this.$store.commit("fetchRecords");
+    this.$store.commit("fetchTags");
   }
   tagString(tag: Tag) {
     return tag ? tag.name : "无";
@@ -124,6 +182,12 @@ export default class Statistics extends Vue {
   padding: 16px;
   text-align: center;
 }
+.chart {
+  width: 430%;
+  &-wrapper {
+    overflow: auto;
+  }
+}
 
 ::v-deep {
   .types-tabs-item {
@@ -133,6 +197,9 @@ export default class Statistics extends Vue {
       color: white;
       &::after {
         display: none;
+        &::-webkit-scrollbar{
+          display: none;
+        }
       }
     }
   }
