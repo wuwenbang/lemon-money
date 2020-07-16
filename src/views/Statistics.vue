@@ -2,7 +2,7 @@
   <Layout>
     <Tabs class-prefix="types" :data-source="recordTypeList" :value.sync="type" />
     <div class="chart-wrapper" ref="chartWrapper">
-      <Chart :options="x" class="chart"/>
+      <Chart :options="chartOptions" class="chart" />
     </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
@@ -33,6 +33,8 @@ import { Component } from "vue-property-decorator";
 import dayjs from "dayjs";
 import clone from "../lib/clone";
 import Chart from "@/components/Chart.vue";
+import day from "dayjs";
+import _ from "lodash";
 @Component({
   components: { Tabs, Chart }
 })
@@ -41,11 +43,45 @@ export default class Statistics extends Vue {
   interval = "day";
   intervalList = intervalList;
   recordTypeList = recordTypeList;
-  get x() {
+
+  get keyValueList() {
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = day(today)
+        .subtract(i, "day")
+        .format("YYYY-MM-DD");
+      const found = _.find(this.groupedList, {
+        title: dateString
+      });
+      array.push({
+        date: dateString,
+        value: found ? found.total : 0
+      });
+    }
+    const chartData = this.recordList.map(item => ({
+      item: item.time,
+      amount: item.amount
+    }));
+    array.sort((a, b) => {
+      if (a > b) {
+        return 1;
+      } else if (a === b) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    return array;
+  }
+
+  get chartOptions() {
+    const keys = this.keyValueList.map(item => item.date);
+    const values = this.keyValueList.map(item => item.value);
     return {
-      grid:{
-        left:0,
-        right:0
+      grid: {
+        left: 40,
+        right: 0
       },
       title: {
         text: "ECharts 入门示例"
@@ -55,37 +91,40 @@ export default class Statistics extends Vue {
         data: ["销量"]
       },
       xAxis: {
-        data: [
-          "1", "2", "3","4", "5", "6", "7","8","9","10",
-          "11", "12","14", "13", "15", "16", "17","18","19","20",
-          "21", "22", "23","24", "25", "26", "27","28","29","30",
-          ],
-          axisTick: {alignWithLabel: true},
-          axisLine:{lineStyle:{color:'#666'}}
+        data: keys,
+        axisTick: { alignWithLabel: true },
+        axisLine: { lineStyle: { color: "#666" } },
+        axisLabel: {
+          formatter: function(value: string, index: number) {
+            return value.substr(5);
+          }
+        }
       },
       yAxis: {
-        type: 'value'
+        type: "value",
+        axisLabel: {
+          show: true
+        },
+        splitLine: {
+          show: true
+        }
       },
       series: [
         {
-          symbol:'circle',
-          symbolSize:12,
-          itemStyle:{
-            borderWidth:2,
-             color: "#41b883"
+          symbol: "circle",
+          symbolSize: 12,
+          itemStyle: {
+            borderWidth: 2,
+            color: "#41b883"
           },
           name: "销量",
           type: "line",
-          data: [
-            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
-            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
-            5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
-          ],
-          tooltip:{
-            show:true,
-            triggerOn:'click',
-            formatter:'{c}',
-            position:'top'
+          data: values,
+          tooltip: {
+            show: true,
+            triggerOn: "click",
+            formatter: "{c}",
+            position: "top"
           }
         }
       ]
@@ -129,8 +168,9 @@ export default class Statistics extends Vue {
 
     return result;
   }
-  mounted(){
-    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+  mounted() {
+    const div = this.$refs.chartWrapper as HTMLDivElement;
+    div.scrollLeft = div.scrollWidth;
   }
   created() {
     this.$store.commit("fetchRecords");
@@ -149,9 +189,9 @@ export default class Statistics extends Vue {
     } else if (day.isSame(now.subtract(2, "day"), "day")) {
       return "前天";
     } else if (day.isSame(now, "year")) {
-      return day.format("YYYY年M月D日");
-    } else {
       return day.format("M月D日");
+    } else {
+      return day.format("YYYY年M月D日");
     }
   }
 }
@@ -197,7 +237,7 @@ export default class Statistics extends Vue {
       color: white;
       &::after {
         display: none;
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           display: none;
         }
       }
