@@ -21,7 +21,7 @@ import recordTypeList from "../constants/recordTypeList";
 import Tabs from "../components/Tabs.vue";
 
 @Component({
-  components: { Tags, Notes, Tabs, NumberPad }
+  components: { Tags, Notes, Tabs, NumberPad },
 })
 export default class Money extends Vue {
   get recordList() {
@@ -37,7 +37,7 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
-    time: new Date().toISOString()
+    time: new Date().toISOString(),
   };
   beforeCreate() {
     const initTags = ["通用", "交通", "饮食", "住宿"];

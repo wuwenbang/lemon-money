@@ -17,15 +17,16 @@ import { mixins } from "vue-class-component";
 @Component
 export default class Tags extends mixins(TagHelper) {
   //createTag 通过 TagHelper Mixin
+  selectedTagName: string = "通用";
   get tagList() {
     return this.$store.state.tagList;
   }
-  selectedTagName: string = "通用";
   created() {
     this.$store.commit("fetchTags");
   }
   mounted() {
     this.$emit("update:value", this.tagList[0]);
+    this.selectedTagName = this.tagList[0].name;
   }
   toggle(tag: Tag) {
     if (tag.name !== this.selectedTagName) {

@@ -7,7 +7,6 @@ import NotFound from '@/views/NotFound.vue';
 import EditLabel from '@/views/EditLabel.vue';
 
 Vue.use(VueRouter);
-
 const routes = [
   {
     path: '/',
@@ -35,7 +34,6 @@ const routes = [
   },
 
 ];
-
 const router = new VueRouter({
   routes
 });

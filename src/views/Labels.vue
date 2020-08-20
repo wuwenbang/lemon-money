@@ -1,5 +1,8 @@
 <template>
   <Layout>
+    <div class="navBar">
+      <span class="title">标签列表</span>
+    </div>
     <div class="tags">
       <router-link class="tag" v-for="tag in tags" :key="tag.name" :to="`/labels/edit/${tag.id}`">
         <span>{{tag.name}}</span>
@@ -33,7 +36,13 @@ export default class Labels extends mixins(TagHelper) {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-
+.navBar {
+  margin-bottom: 12px;
+  background: white;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+}
 .tags {
   background: white;
   padding-left: 16px;

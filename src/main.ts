@@ -25,7 +25,7 @@ window.onload = function () {
   }, 0)
 }
 if (document.documentElement.clientWidth > 500) {
-  window.alert("请使用移动设备（或者开发者工具移动设备模式并刷新）以保证浏览效果");
+  window.alert("请使用【移动设备】或者【开发者工具移动设备模式】并刷新以保证浏览效果");
   const img = document.createElement('img');
   img.src = "https://i.loli.net/2020/07/13/RcQHgCmJSahEDlK.png";
   img.style.position = "fixed"

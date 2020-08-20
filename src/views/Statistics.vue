@@ -83,12 +83,9 @@ export default class Statistics extends Vue {
         left: 40,
         right: 0
       },
-      title: {
-        text: "ECharts 入门示例"
-      },
       tooltip: {},
       legend: {
-        data: ["销量"]
+        data: ["金额"]
       },
       xAxis: {
         data: keys,
@@ -117,7 +114,7 @@ export default class Statistics extends Vue {
             borderWidth: 2,
             color: "#41b883"
           },
-          name: "销量",
+          name: "金额",
           type: "line",
           data: values,
           tooltip: {
